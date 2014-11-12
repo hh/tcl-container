@@ -17,4 +17,6 @@ cd ${LIBDNET}
 
 (cd /tmp/stage/libdnet && tar zcf /build/libdnet.tgz .)
 
-
+if [ -d /tarballs ]; then
+		cp /build/libdnet.tgz /tarballs
+fi

@@ -4,7 +4,7 @@ COPY deps.list /tmp/deps.list
 
 ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
 # Without this path set, many things fail to load
-ENV LD_LIBRARY_PATH /usr/local/lib
+# ENV LD_LIBRARY_PATH /usr/local/lib
 
 # Install the TCZ dependencies
 RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \

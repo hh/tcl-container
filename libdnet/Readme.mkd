@@ -4,7 +4,7 @@ The build.sh can be used in multiple ways.
 vulk/tcl:build-libdnet
 
 ```
-docker run -v $(pwd):/build vulk/tcl:build-libdnet
+docker run -v $(pwd):/tarballs vulk/tcl:build-libdnet
 ```
 
 vulk/tcl:dev

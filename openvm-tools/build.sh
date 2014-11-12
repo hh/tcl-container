@@ -26,3 +26,7 @@ done
 
 (cd /tmp/stage/open-vm-tools && tar zcf /build/open-vm-tools.tgz .)
 
+if [ -d /tarballs ]; then
+		cp /build/open-vm-tools.tgz /tarballs
+fi
+
