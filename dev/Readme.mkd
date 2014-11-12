@@ -1,0 +1,49 @@
+This creates a dev image that allows us to compile binaries for this version of tcl.
+
+```
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+vulk/tcl            dev                 16ecd02b3ca9        7 seconds ago       130.5 MB
+vulk/tcl            core                86c5e6b0908f        2 minutes ago       5.248 MB
+$ docker run vulk/tcl:dev gcc -v 
+Reading specs from /usr/local/lib/gcc/i486-pc-linux-gnu/4.7.2/specs
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/local/lib/gcc/i486-pc-linux-gnu/4.7.2/lto-wrapper
+Target: i486-pc-linux-gnu
+Configured with: ../gcc-4.7.2/configure --prefix=/usr/local --libexecdir=/usr/local/lib --enable-shared --enable-threads=posix --enable-__cxa_atexit --enable-c99 --enable-long-long --enable-clocale=gnu --enable-languages=c,c++ --disable-multilib --disable-libstdcxx-pch --enable-cloog-backend=isl --with-system-zlib --enable-frame-pointer --disable-bootstrap --disable-cloog-version-check --enable-lto --with-mpc=/usr/local --with-mpfr=/usr/local --with-gmp=/usr/local--with-ppl=/usr/local --with-cloog=/usr/local --enable-cloog-backend=isl --disable-cloog-version-check
+Thread model: posix
+gcc version 4.7.2 (GCC) 
+```
+
+```
+$  docker build -t vulk/tcl:dev . 
+
+Sending build context to Docker daemon 6.656 kB
+Sending build context to Docker daemon 
+Step 0 : FROM vulk/tcl:core
+ ---> 86c5e6b0908f
+Step 1 : COPY deps.list /tmp/deps.list
+ ---> Using cache
+ ---> d18710260ea3
+Step 2 : ENV TCL_REPO_BASE http://tinycorelinux.net/5.x/x86
+ ---> Using cache
+ ---> 9cab88ad1287
+Step 3 : ENV LD_LIBRARY_PATH /usr/local/lib
+ ---> Using cache
+ ---> 09d76a7a9df4
+Step 4 : RUN cd /tmp && for dep in $(cat /tmp/deps.list); do     echo "Download $TCL_REPO_BASE/tcz/$dep" &&        wget $TCL_REPO_BASE/tcz/$dep &&         unsquashfs -f -d / /tmp/$dep &&         rm -f /tmp/$dep ;    done
+ ---> Using cache
+ ---> 13e6ff9950c3
+Step 5 : RUN ldconfig
+ ---> Using cache
+ ---> b0d3db6ebbb2
+Step 6 : COPY build-libdnet.sh /tmp/
+ ---> Using cache
+ ---> 7306c24efb0c
+Step 7 : RUN /bin/sh /tmp/build-libdnet.sh
+ ---> Using cache
+ ---> 16ecd02b3ca9
+Successfully built 16ecd02b3ca9
+$  docker push vulk/tcl:dev
+
+```

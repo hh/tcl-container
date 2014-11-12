@@ -1,0 +1,37 @@
+The build.sh can be used in multiple ways.
+
+
+vulk/tcl:build-openvm-tools
+
+```
+docker run -v $(pwd):/tarballs vulk/tcl:build-openvm-tools
+```
+
+vulk/tcl:dev
+
+```
+docker run -ti -v `pwd`:/build vulk/tcl:dev /build/build.sh
+```
+
+
+Results are the same either way:
+
+```
+$ tar tfz open-vm-tools.tgz  | grep bin/vm
+./usr/local/bin/vmware-hgfsclient
+./usr/local/bin/vmware-checkvm
+./usr/local/bin/vmware-rpctool
+./usr/local/bin/vmtoolsd
+./usr/local/bin/vmware-toolbox-cmd
+./usr/local/bin/vmware-xferlogs
+
+$ ls -lah open-vm-tools.tgz 
+-rw-r--r-- 1 root root 738K Nov 11 14:46 open-vm-tools.tgz
+```
+
+
+The build-openvm-tools image was made with:
+
+```
+docker build -t vulk/tcl:build-openvm-tools .
+````

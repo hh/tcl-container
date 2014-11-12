@@ -1,0 +1,47 @@
+This creates the base tcl docker image we need:
+
+```
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+vulk/tcl            core                a5f64496b5b3        12 seconds ago      5.248 MB
+```
+
+Be sure and use fakeroot (or root if you feel dangerous):
+
+```
+$ fakeroot ./import-core.sh 
+--2014-11-11 15:22:48--  http://tinycorelinux.net/5.x/x86//release/distribution_files/rootfs.gz
+Resolving tinycorelinux.net (tinycorelinux.net)... 89.22.99.37
+Connecting to tinycorelinux.net (tinycorelinux.net)|89.22.99.37|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2316252 (2.2M) [application/x-gzip]
+Saving to: ‘rootfs.gz’
+p
+100%[===============================================================================>] 2,316,252    675KB/s   in 3.8s   
+
+2014-11-11 15:22:52 (592 KB/s) - ‘rootfs.gz’ saved [2316252/2316252]
+
+--2014-11-11 15:22:52--  http://tinycorelinux.net/5.x/x86//tcz/squashfs-tools-4.x.tcz
+Resolving tinycorelinux.net (tinycorelinux.net)... 89.22.99.37
+Connecting to tinycorelinux.net (tinycorelinux.net)|89.22.99.37|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 102400 (100K) [application/octet-stream]
+Saving to: ‘squashfs-tools-4.x.tcz’
+
+100%[===============================================================================>] 102,400      102KB/s   in 1.0s   
+
+2014-11-11 15:22:54 (102 KB/s) - ‘squashfs-tools-4.x.tcz’ saved [102400/102400]
+
+10009 blocks
+Parallel unsquashfs: Using 12 processors
+2 inodes (3 blocks) to write
+
+[============================================================================================================|] 3/3 100%
+
+created 2 files
+created 4 directories
+created 0 symlinks
+created 0 devices
+created 0 fifos
+a5f64496b5b307c0d1ad6529906902f4ba7023ee6d98b9536da26063017c5fc8
+```

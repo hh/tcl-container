@@ -1,0 +1,62 @@
+The build.sh can be used in multiple ways.
+
+
+vulk/tcl:build-hanlon-busybox
+
+```
+docker run -v $(pwd):/build vulk/tcl:build-hanlon-busybox
+```
+
+vulk/tcl:dev
+
+```
+docker run -ti -v `pwd`:/build vulk/tcl:dev /build/build.sh
+```
+
+Results are the same either way:
+
+```
+Connecting to www.busybox.net (140.211.167.224:80)
+busybox-1.22.1.tar.b 100% |******************|  2166k  0:00:00 ETA
+patching file networking/udhcp/common.c
+Hunk #1 succeeded at 64 with fuzz 2 (offset 1 line).
+Hunk #2 succeeded at 134 with fuzz 2 (offset 2 lines).
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/basic/split-include
+  HOSTCC  scripts/basic/docproc
+  GEN     include/applets.h
+	....
+
+$ tar xvfz busybox.tgz  ./bin/busybox
+./bin/busybox
+$ file ./bin/busybox 
+./bin/busybox: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 3.0.21, stripped
+$ ldd ./bin/busybox 
+        linux-gate.so.1 (0xf77c4000)
+        libm.so.6 => /usr/lib32/libm.so.6 (0xf7746000)
+        libc.so.6 => /usr/lib32/libc.so.6 (0xf758e000)
+        /lib/ld-linux.so.2 (0xf77c7000)
+$ ls -la ./bin/busybox
+-rwxr-xr-x 1 hh hh 773364 Nov 11 15:58 ./bin/busybox
+$ ls -la busybox.tgz 
+-rw-r--r-- 1 root root 477959 Nov 11 15:58 busybox.tgz
+```
+
+$ tar tfz open-vm-tools.tgz  | grep bin/vm
+./usr/local/bin/vmware-hgfsclient
+./usr/local/bin/vmware-checkvm
+./usr/local/bin/vmware-rpctool
+./usr/local/bin/vmtoolsd
+./usr/local/bin/vmware-toolbox-cmd
+./usr/local/bin/vmware-xferlogs
+
+$ ls -lah open-vm-tools.tgz 
+-rw-r--r-- 1 root root 738K Nov 11 14:46 open-vm-tools.tgz
+```
+
+
+The build-hanlon-busybox image was made with:
+
+```
+docker build -t vulk/tcl:build-hanlon-busybox .
+````
