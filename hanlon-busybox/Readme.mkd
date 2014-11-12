@@ -1,10 +1,9 @@
-The build.sh can be used in multiple ways.
-
+The build.sh can be used in multiple ways, if /tarballs is mounted, it will output there otherwise /build.
 
 vulk/tcl:build-hanlon-busybox
 
 ```
-docker run -v $(pwd):/build vulk/tcl:build-hanlon-busybox
+docker run -v $(pwd):/tarballs vulk/tcl:build-hanlon-busybox
 ```
 
 vulk/tcl:dev
@@ -41,19 +40,6 @@ $ ls -la ./bin/busybox
 $ ls -la busybox.tgz 
 -rw-r--r-- 1 root root 477959 Nov 11 15:58 busybox.tgz
 ```
-
-$ tar tfz open-vm-tools.tgz  | grep bin/vm
-./usr/local/bin/vmware-hgfsclient
-./usr/local/bin/vmware-checkvm
-./usr/local/bin/vmware-rpctool
-./usr/local/bin/vmtoolsd
-./usr/local/bin/vmware-toolbox-cmd
-./usr/local/bin/vmware-xferlogs
-
-$ ls -lah open-vm-tools.tgz 
--rw-r--r-- 1 root root 738K Nov 11 14:46 open-vm-tools.tgz
-```
-
 
 The build-hanlon-busybox image was made with:
 
