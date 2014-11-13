@@ -92,3 +92,10 @@ libgcrypt-dev.tcz
 libgcrypt.tcz
 bash.tcz
 coreutils.tcz
+acl.tcz
+attr.tcz
+attr-dev.tcz
+libattr.tcz
+gmp.tcz
+libcap.tcz
+libusb.tcz
