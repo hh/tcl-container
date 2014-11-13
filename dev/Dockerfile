@@ -1,6 +1,7 @@
 FROM vulk/tcl:core
 
 COPY deps.list /tmp/deps.list
+ENV http_proxy http://1.1.1.1:3128
 
 ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
 # Without this path set, many things fail to load
