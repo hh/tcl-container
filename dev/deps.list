@@ -91,3 +91,4 @@ readline.tcz
 libgcrypt-dev.tcz
 libgcrypt.tcz
 bash.tcz
+coreutils.tcz
