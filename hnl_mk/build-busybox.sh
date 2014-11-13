@@ -32,9 +32,9 @@ find /tmp/stage/busybox  -type f | \
 
 # Generating two files, the 2.0.0 release name and the new tcz
 (cd /tmp/stage/busybox && tar zcf /build/mk-custom-busybox.tar.gz .)
-(cd /tmp/stage && mksquashfs busybox /build/$BB.tcz)
+(cd /tmp/stage && mksquashfs busybox /build/$BUSYBOX.tcz)
 
 if [ -d /output ]; then
 		cp /build/mk-custom-busybox.tar.gz /output
-		cp /build/$BB.tcz /output
+		cp /build/$BUSYBOX.tcz /output
 fi
