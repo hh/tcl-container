@@ -5,7 +5,7 @@ ENV http_proxy http://1.1.1.1:3128
 
 ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
 # Without this path set, many things fail to load
-# ENV LD_LIBRARY_PATH /usr/local/lib
+ENV LD_LIBRARY_PATH /usr/local/lib
 
 # Install the TCZ dependencies
 RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \
@@ -16,8 +16,5 @@ RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \
     done
 
 RUN ldconfig
-
-COPY build-libdnet.sh /tmp/
-RUN /bin/sh /tmp/build-libdnet.sh
 
 
