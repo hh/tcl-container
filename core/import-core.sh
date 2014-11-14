@@ -13,7 +13,11 @@ test -f squashfs-tools-4.x.tcz || wget $TCL_BASE_URL/tcz/squashfs-tools-4.x.tcz
 mkdir rootfs
 cd rootfs
 zcat ../rootfs.gz | cpio -f -i -H newc -d --no-absolute-filenames
-unsquashfs -d . -f ../squashfs-tools-4.x.tcz
+unsquashfs -n -d . -f ../squashfs-tools-4.x.tcz
+mkdir -p home/tc etc/sysconfig/tcedir
+chown -R 1001.50 home/tc etc/sysconfig/tcedir
+patch usr/bin/tce-load ../tce-load-docker.patch
+cp usr/bin/tce-load usr/bin/tce-load-docker
 cd ..
 tar -C rootfs -c . | docker import - vulk/tcl:core
 
