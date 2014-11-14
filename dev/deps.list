@@ -100,3 +100,6 @@ gmp.tcz
 libcap.tcz
 libusb.tcz
 strace.tcz
+
+compiletc.tcz
+fuse.tcz
