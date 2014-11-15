@@ -1,3 +1,9 @@
+compiletc
+automake
+findutils
+bash
+ncurses-dev
+perl5
 libedit-dev
 libxcb-dev
 libX11-dev

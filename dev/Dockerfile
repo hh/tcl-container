@@ -4,15 +4,6 @@ ENV LD_LIBRARY_PATH /usr/local/lib
 
 ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
 
-# Install the kernel sources and everything needed to build them
-COPY linux-kernel-sources-env.sh.patch /tmp/
-RUN sudo -u tc tce-load -wicl linux-kernel-sources-env ;\
-    patch -p1 /usr/local/bin/linux-kernel-sources-env.sh < /tmp/linux-kernel-sources-env.sh.patch ;\
-    sed -i 's/sleep 10/sleep 0.5/' /usr/local/bin/linux-kernel-sources-env.sh ;\
-    sed -i 's/exit 6/exit 0/' /usr/local/bin/linux-kernel-sources-env.sh ;\
-		mkdir -p /lib/modules/3.8.13-1 ;\
-		su -c '/usr/local/bin/linux-kernel-sources-env.sh' tc
-
 # Install all the dev stuff
 COPY deps.list /tmp/
 RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \
@@ -24,6 +15,17 @@ RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \
 		chown -R tc /home/tc
 RUN wget http://tcztools.googlecode.com/hg/tcztools.tcz -cP /etc/sysconfig/tcedir/optional/ ;\
 		su -c 'tce-load -ic tcztools' tc
+
+# Install the kernel sources and everything needed to build them
+# This adds 541.4M to the image...
+# so just run linux-kernel-sources-env.sh before you compile modules
+COPY linux-kernel-sources-env.sh.patch /tmp/
+RUN sudo -u tc tce-load -wicl linux-kernel-sources-env ;\
+    patch -p1 /usr/local/bin/linux-kernel-sources-env.sh < /tmp/linux-kernel-sources-env.sh.patch ;\
+    sed -i 's/sleep 10/sleep 0.5/' /usr/local/bin/linux-kernel-sources-env.sh ;\
+    sed -i 's/exit 6/exit 0/' /usr/local/bin/linux-kernel-sources-env.sh ;\
+		mkdir -p /lib/modules/3.8.13-1
+
 
 # ldconfig -v
 #ldconfig: uClibc version
