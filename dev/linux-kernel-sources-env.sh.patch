@@ -1,0 +1,49 @@
+diff -Naur a/usr/local/bin/linux-kernel-sources-env.sh b/usr/local/bin/linux-kernel-sources-env.sh
+--- a/usr/local/bin/linux-kernel-sources-env.sh	2014-11-14 21:09:45.284612664 +0000
++++ b/usr/local/bin/linux-kernel-sources-env.sh	2014-11-14 21:09:56.324612962 +0000
+@@ -83,11 +83,11 @@
+ 
+ if [ ! -f ${tce_path}/optional/"$i" ]; then
+ 	chkconn
+-	tce-load -wil "$pkgname"
+-	[ x$? != x0 ] && tce-load -wil "$pkgname"
++	tce-load -wilc "$pkgname"
++	[ x$? != x0 ] && tce-load -wilc "$pkgname"
+ 	[ -f ${tceinstalled}/"$pkgname" ] || exit
+ elif [ ! -f ${tceinstalled}/"$pkgname" ]; then
+-	tce-load -i "$pkgname"
++	tce-load -ic "$pkgname"
+ fi
+ 
+ 
+@@ -100,7 +100,7 @@
+ 
+ ##############################################
+ 
+-kerver=`uname -r | cut -c1-6`
++kerver=3.8.13
+ k_patched="linux-${kerver}-patched.txz"
+ 
+ src="/usr/src"
+@@ -205,7 +205,7 @@
+ [ -d /usr/src/linux-${kerver}-patched ] && mv /usr/src/linux-${kerver}-patched /usr/src/linux-${kerver}
+ 
+ echo "preparing kernel src..."
+-cd /usr/src/linux-${kerver} && make mrproper
++cd /usr/src/linux-${kerver} && make mrproper ARCH=i386 CONFIG_SHELL=/usr/local/bin/bash
+ 
+ 
+ case $kerarch in
+@@ -213,9 +213,9 @@
+ 	    tinycore ) [ -d /usr/src ] && cp /tmp/config-${kerver}-tinycore /usr/src/linux-${kerver}/.config ;;
+ esac
+ 
+-make oldconfig
+-make prepare
+-make modules_prepare
++make olddefconfig ARCH=i386
++make prepare ARCH=i386
++make modules_prepare ARCH=i386
+ 
+ mod_src=/usr/src/linux-${kerver}/Module.symvers
+ mod_core=Module.symvers-${kerver}-tinycore
