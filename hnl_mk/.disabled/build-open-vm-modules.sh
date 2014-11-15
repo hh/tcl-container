@@ -1,9 +1,8 @@
 #!/bin/sh
 # script that downloads and builds open-vm-tools
 # supposed to be run in a tinycorelinux container
+# It may be that I need VMWare full instead of VMWare player
 
-
-https://download3.vmware.com/software/player/file/VMware-Player-6.0.4-2249910.i386.bundle
 # Our defaults
 [ -z "$OPEN_VM_MODULES_STAMP" ] && OPEN_VM_MODULES_STAMP=2249910
 [ -z "$OPEN_VM_MODULES_VER" ] && OPEN_VM_MODULES_VER=6.0.4

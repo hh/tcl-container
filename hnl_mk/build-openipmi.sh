@@ -17,7 +17,8 @@ cd ${OPEN_IPMI}/
 #patch -p0 < $f
 #done
 
-./configure --prefix=/usr/local
+
+LDFLAGS=-ltinfo ./configure --prefix=/usr/local
 make -j $MAKE_JOBS DESTDIR=/tmp/stage/openipmi
 make DESTDIR=/tmp/stage/openipmi install
 

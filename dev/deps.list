@@ -4,4 +4,5 @@ libX11-dev
 readline-dev
 libgcrypt-dev
 git
-
+glibc_apps
+popt-dev
