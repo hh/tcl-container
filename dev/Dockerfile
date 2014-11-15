@@ -1,38 +1,39 @@
 FROM vulk/tcl:core
-
-COPY deps.list /tmp/deps.list
-ENV http_proxy http://1.1.1.1:3128
-
-ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
 # Without this path set, many things fail to load
 ENV LD_LIBRARY_PATH /usr/local/lib
 
-# Install the TCZ dependencies
+ENV TCL_REPO_BASE   http://tinycorelinux.net/5.x/x86
+
+# Install the kernel sources and everything needed to build them
+COPY linux-kernel-sources-env.sh.patch /tmp/
+RUN sudo -u tc tce-load -wicl linux-kernel-sources-env ;\
+    patch -p1 /usr/local/bin/linux-kernel-sources-env.sh < /tmp/linux-kernel-sources-env.sh.patch ;\
+    sed -i 's/sleep 10/sleep 0.5/' /usr/local/bin/linux-kernel-sources-env.sh ;\
+    sed -i 's/exit 6/exit 0/' /usr/local/bin/linux-kernel-sources-env.sh ;\
+		mkdir -p /lib/modules/3.8.13-1 ;\
+		su -c '/usr/local/bin/linux-kernel-sources-env.sh' tc
+
+# Install all the dev stuff
+COPY deps.list /tmp/
 RUN cd /tmp && for dep in $(cat /tmp/deps.list); do \
-    echo "Download $TCL_REPO_BASE/tcz/$dep" &&\
-        wget $TCL_REPO_BASE/tcz/$dep && \
-        unsquashfs -f -d / /tmp/$dep && \
-        rm -f /tmp/$dep ;\
-    done
+		sudo -u tc tce-load -wicl $dep ;\
+		done ;\
+		mkdir -p /etc/sysconfig/tcedir/optional ;\
+		mkdir -p /home/tc ;\
+		chown -R tc /etc/sysconfig/tcedir ;\
+		chown -R tc /home/tc
+RUN wget http://tcztools.googlecode.com/hg/tcztools.tcz -cP /etc/sysconfig/tcedir/optional/ ;\
+		su -c 'tce-load -ic tcztools' tc
 
-RUN  mkdir /usr/src ; \
-		 cd /usr/src ; \
-		 wget http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/src/kernel/Module.symvers-3.8.13-tinycore	; \
-		 wget http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/src/kernel/config-3.8.13-tinycore ; \
-     wget -O - http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/src/kernel/linux-3.8.13-patched.txz | tar xJf - ; \
-		 ln -s linux-3.8.13-patched /usr/src/linux ; \
-		 cd /usr/src/linux ; \
-		 cp ../Module.symvers-3.8.13-tinycore Module.symvers	; \
-		 cp ../config-3.8.13-tinycore .config ; \
-		 make mrproper CONFIG_SHELL=/usr/local/bin/bash ARCH=i386 ; \
-		 cp ../config-3.8.13-tinycore .config ; \
-		 make olddefconfig CONFIG_SHELL=/usr/local/bin/bash ARCH=i386 ; \
-		 make prepare CONFIG_SHELL=/usr/local/bin/bash ARCH=i386 ; \
-		 make modules_prepare  CONFIG_SHELL=/usr/local/bin/bash ARCH=i386 ; \
-		 cp ../Module.symvers-3.8.13-tinycore Module.symvers	; \
-		 make SUBDIRS=scripts/mod CONFIG_SHELL=/usr/local/bin/bash ARCH=i386 ; \
-		 rm ../Module.symvers-3.8.13-tinycore	../config-3.8.13-tinycore
-
-RUN ldconfig
+# ldconfig -v
+#ldconfig: uClibc version
+#/lib:
+#ldconfig: skipping /lib: Value too large for defined data type
+#/usr/lib:
+#ldconfig: skipping /usr/lib: Value too large for defined data type
+#/u:
+#ldconfig: skipping /u: No such file or directory
+# I don't think uClibc and ldconfig are playing together well on 32bit bins on 64bit docker hosts
+# RUN ldconfig
 
 
