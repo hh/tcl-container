@@ -12,3 +12,4 @@ libgcrypt-dev
 git
 glibc_apps
 popt-dev
+openssl-1.0.0-dev
