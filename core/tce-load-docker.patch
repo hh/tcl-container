@@ -1,5 +1,13 @@
 --- /usr/bin/tce-load
 +++ /usr/bin/tce-load
+@@ -7,6 +7,7 @@
+ checknotroot
+ PROG_NAME=$(basename $0)
+ KERNELVER=$(uname -r)
++KERNELVER=3.8.13-tinycore # We need deps, even though we can't load kernel mods
+ unset WGET INSTALL COPYINSTALL BOOTING ONDEMAND DOWNLOAD_ONLY LOAD_ONLY SUPPRESS
+ FORCE="n"  # Overwrite system files default to no. Use -f to force overwrite.
+ SAVED_DIR=`pwd`
 @@ -93,14 +93,26 @@
  }
  
